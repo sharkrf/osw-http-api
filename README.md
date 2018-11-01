@@ -1647,6 +1647,8 @@ Response:
 
 Network wireless settings query (get)/change (post).
 
+*reload* in the response will be set to 1 when a web interface reload is neded.
+
 Request (optional):
 ```json
 {
@@ -1694,7 +1696,8 @@ Response:
   "apkey": "",
   "apchnr": 6,
   "start_in_ap_mode": 0,
-  "ap_mode": 0
+  "ap_mode": 0,
+  "reload": 1
 }
 ```
 
