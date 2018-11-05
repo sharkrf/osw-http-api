@@ -16,15 +16,15 @@ can be used for further API communication.
 
 ### Acquiring a JWT
 
-- Request a token with a HTTP GET from http://openspot2.local/**gettok**.
+- Request a token with a HTTP GET from http://openspot2.local/gettok.
 - Concatenate the token and the password string.
 - Hash this using SHA256 to get the digest.
-- HTTP POST the token and the digest to http://openspot2.local/**login** which
+- HTTP POST the token and the digest to http://openspot2.local/login which
   will respond with a JWT.
 
 Example login process with example JSON queries:
 
-- HTTP GET http://openspot2.local/**gettok**
+- HTTP GET http://openspot2.local/gettok
   Response:
 	```json
 	{
@@ -40,7 +40,7 @@ Example login process with example JSON queries:
 	This gives us the digest *"2c476e1191ac5d38f72d9b00aca1c1a64aebe991de8c2c4806e413016844e6be"*
 	This digest have to be lowercase only.
 
-- Now we HTTP POST http://openspot2.local/**login** this JSON:
+- Now we HTTP POST http://openspot2.local/login this JSON:
 	```json
 	{
 	  "token": "1f9a8b7c",
@@ -82,7 +82,7 @@ Example login process with example JSON queries:
 The HTTP API interfaces can be used for acquiring a valid JWT so a WebSocket
 connection can be opened for further WebSocket API usage.
 
-### http://openspot2.local/**gettok**
+### http://openspot2.local/gettok
 
 Doesn't take any request parameters. Returns the session token, which is
 a hexadecimal representation (8 ASCII characters) of an unsigned 32-bit integer.
@@ -94,7 +94,7 @@ Response:
 }
 ```
 
-### http://openspot2.local/**checktok**
+### http://openspot2.local/checktok
 
 Checks the validity of the supplied JWT in the *Authorization: Bearer* field in
 of the HTTP request header. *success* is 1 if it's valid. *nopass* is 1 if the
@@ -114,7 +114,7 @@ Response:
 }
 ```
 
-### http://openspot2.local/**login**
+### http://openspot2.local/login
 
 Logs in the user if the given token and digest is valid. Returns the openSPOT2's
 hostname and the JWT.
@@ -135,13 +135,13 @@ Response:
 }
 ```
 
-### http://openspot2.local/**auth**
+### http://openspot2.local/auth
 
 Starts the SharkRF Network login process. The browser will be redirected to the
 SharkRF Network login page. After a successful login the openSPOT2 will be
 authorized on the network so it can access various network resources.
 
-### http://openspot2.local/**check**
+### http://openspot2.local/check
 
 Returns basic information about the device.
 
