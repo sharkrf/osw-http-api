@@ -1403,6 +1403,7 @@ is not available.
 *subver* is the device subversion.
 *blver* is the bootloader version.
 *blupgradeneeded* is 1 if the bootloader can be upgraded.
+*blupgradecanstart* is 1 if the bootloader upgrade process can be started.
 *uid* is the device unique ID in hexadecimal.
 
 *dstdate1* and *dstdate2* points to the next 2 days from the next
