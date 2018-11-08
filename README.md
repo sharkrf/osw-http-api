@@ -1440,9 +1440,8 @@ Config profile settings query (get)/change (post).
 rebooting.
 *init_ran* is set to 1 if the initial setup has been completed at least once in
 the past.
-Define *active_cp_name* to rename the current config profile.
-Set *active_cp_copyto* if you want to copy the current config profile to
-another slot.
+Define *cp_name1*, *cp_name2* and so on to rename the config profile.
+Set *cp_copyfrom* and *cp_copyto* if you want to copy config profiles.
 *active_cp_initialized* is 1 if the currently active config profile is
 initialized.
 The array *cp_names* contain each config profile's name.
@@ -1458,8 +1457,13 @@ Query (optional):
   "timeoutchange_cp": 0,
   "rxtimeout_sec": 0,
   "rxtimeout_mode": 0,
-  "active_cp_name": "default",
-  "active_cp_copyto": 0
+  "cp_name1": "slot1",
+  "cp_name2": "slot2",
+  "cp_name3": "slot3",
+  "cp_name4": "slot4",
+  "cp_name5": "slot5",
+  "cp_copyfrom": 0,
+  "cp_copyto": 0
 }
 ```
 Response:
@@ -1473,19 +1477,19 @@ Response:
   "rxtimeout_mode": 0,
   "active_cp_hostname": "openspot2",
   "active_cp_initialized": 1,
-  "cp_names": ["default", "", "", "", ""]
+  "cp_names": ["slot1", "slot2", "slot3", "slot4", "slot5"]
 }
 ```
 
 ### config-export
 
-If you want to export the active config profile settings, you can send a post
-request to this interface. You can request settings in chunks. The number of
-available chunks is in *chunk_count* (this can also be requested with a
-get request). Each chunk is represented in string of hexadecimal character
-pairs. *config_size* is the count of valid config bytes in the file.
-The whole config's CRC is returned in *config_crc*. Note that *chunk*
-data in this example is truncated.
+If you want to export config profile settings, you can send a post request to
+this interface. Set *profile_nr* to the profile slot number you want to export.
+You can request settings in chunks. The number of available chunks is in
+*chunk_count* (this can also be requested with a get request). Each chunk is
+represented in string of hexadecimal character pairs. *config_size* is the
+count of valid config bytes in the file. The whole config's CRC is returned in
+*config_crc*. Note that *chunk* data in this example is truncated.
 
 Set *passinc* to 1 if you want to include all passwords in the exported
 configuration profile data.
@@ -1493,6 +1497,7 @@ configuration profile data.
 Request (optional):
 ```json
 {
+  "profile_nr": 0,
   "chunk_nr": 0,
   "passinc": 0
 }
@@ -1510,9 +1515,10 @@ Response:
 
 ### config-import
 
-If you want to import the active config profile settings, you can send a
-request to this interface.
+If you want to import config profile settings, you can send a request to this
+interface.
 
+*profile_nr* is the profile number where the imported config will be stored.
 *config_size* is the count of valid config bytes in the file.
 *chunk_size* is the length which this interface waits *chunk* data in string
 of hexadecimal character pairs.
@@ -1521,6 +1527,8 @@ of hexadecimal character pairs.
 because it may be changed after a successful import - in this case the caller
 knows on what address openSPOT2 will start listening on after the device
 reboots. Note that *chunk* data in this example is truncated.
+*reboot* is 1 if the device is rebooting (which happens when the currently
+active configuration profile slot is the destination slot).
 
 *status* can be the following:
 
@@ -1537,6 +1545,7 @@ reboots. Note that *chunk* data in this example is truncated.
 Query (optional):
 ```json
 {
+  "profile_nr": 0,
   "config_size": 1458,
   "config_crc": "a9fd8832",
   "chunk_nr": 0,
@@ -1549,7 +1558,8 @@ Response:
   "chunk_size": 1024,
   "chunk_count": 3,
   "active_cp_hostname": "openspot2",
-  "status": 0
+  "status": 0,
+  "reboot": 0
 }
 ```
 
@@ -1649,11 +1659,14 @@ Response:
 
 Network wireless settings query (get)/change (post).
 
+If *commonsettings* is 1, then the wireless configuration will be saved to all
+configuration profiles.
 *reload* in the response will be set to 1 when a web interface reload is neded.
 
 Request (optional):
 ```json
 {
+  "commonsettings": 1,
   "ssid1": "Home",
   "key1": "secretpassword1",
   "bssid1": "",
@@ -1679,6 +1692,7 @@ Request (optional):
 Response:
 ```json
 {
+  "commonsettings": 1,
   "ssid1": "Home",
   "key1": "secretpassword1",
   "bssid1": "",
@@ -2300,9 +2314,11 @@ Init setup settings query (get)/change (post). Returns already stored
 settings.
 
 If *finish* is 1 in the query, then already stored init settings will
-be copied to all needed places in the config. If openSPOT2 will reconnect
-to the Wi-Fi network after *finish* is set to 1 in the query,
-*reconnect* is set to 1 in the response.
+be copied to all needed places in the config. If *commonsettings* in the
+*net-wl* interface is 1, then the settings will be copied to all configuration
+profiles.
+If openSPOT2 will reconnect to the Wi-Fi network after *finish* is set to 1 in
+the query, *reconnect* is set to 1 in the response.
 
 Request (optional):
 ```json
