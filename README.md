@@ -1420,6 +1420,68 @@ Response:
 }
 ```
 
+### dapnetsettings
+
+DAPNET connector settings query (get)/change (post).
+
+See the **modemmode** interface for available *modem_mode* values.
+
+Request (optional):
+```json
+{
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 43434,
+  "callsign": "",
+  "auth_key": "",
+  "rx_timeout_sec": 65,
+  "conn_retry_interval_sec": 65,
+  "allow_in_bg": 0,
+  "tx_time": 0,
+  "decode_rot1": 1,
+  "only_allowed_rics": 0,
+  "allowed_ric1": 0,
+  "allowed_ric2": 0,
+  "allowed_ric3": 0,
+  "allowed_ric4": 0,
+  "allowed_ric5": 0,
+  "allowed_ric6": 0,
+  "allowed_ric7": 0,
+  "allowed_ric8": 0,
+  "send_callsign": "",
+  "send_auth_key": ""
+}
+```
+Response:
+```json
+{
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 43434,
+  "callsign": "",
+  "auth_key": "",
+  "rx_timeout_sec": 65,
+  "conn_retry_interval_sec": 65,
+  "allow_in_bg": 0,
+  "tx_time": 0,
+  "decode_rot1": 1,
+  "only_allowed_rics": 0,
+  "allowed_ric1": 0,
+  "allowed_ric2": 0,
+  "allowed_ric3": 0,
+  "allowed_ric4": 0,
+  "allowed_ric5": 0,
+  "allowed_ric6": 0,
+  "allowed_ric7": 0,
+  "allowed_ric8": 0,
+  "send_callsign": "",
+  "send_auth_key": ""
+}
+```
+
+**send_callsign** and **send_auth_key** are only used by the browser to send
+messages using the DAPNET API.
+
 ### srfipconnclientsettings
 
 SharkRF IP Connector Client settings query (get)/change (post).
