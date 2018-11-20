@@ -804,6 +804,127 @@ The JSON format is the following:
 *restart_in_sec* indicates how many seconds remaining after the AutoCal process
 is finished before entering Phase 1 again.
 
+#### Push message type: pocsagmsgqueue
+
+The openSPOT2 sends this message after the WebSocket connection is opened.
+The JSON format is the following:
+
+```json
+{
+  "type": "pocsagmsgqueue",
+  "queue": [
+    {msg: "beer1", ric: 161005, alert: 0, ts: 1542706486, id: "b0b6228a2eba0ea6"},
+    {msg: "beer2", ric: 161005, alert: 0, ts: 1542706487, id: "c1b6228a2eba0ea7"}
+  ]
+}
+```
+
+*queue* contains all queued POCSAG messages. *alert* is 1 if the message is an
+alert (with or without *msg* content). *id* is a unique message identifier.
+*ts* is the UNIX timestamp of the queue message add.
+
+#### Push message type: pocsagqueuedmsg
+
+The openSPOT2 sends this message when a POCSAG message has been added to the
+message queue. The JSON format is the following:
+
+```json
+{
+  "type": "pocsagqueuedmsg",
+  "msg": {msg: "beer", ric: 161005, alert: 0, ts: 1542706745, id: "de4002de5048f86e"}
+}
+```
+
+*alert* is 1 if the message is an alert (with or without *msg* content).
+*id* is a unique message identifier. *ts* is the UNIX timestamp of the queue
+message add.
+
+#### Push message type: pocsagmsgsent
+
+The openSPOT2 sends this message when a POCSAG message has been sent. The JSON
+format is the following:
+
+```json
+{
+  "type": "pocsagmsgsent",
+  "id": "de4002de5048f86e"
+}
+```
+
+*id* is a unique message identifier.
+
+#### Push message type: pocsagmsgtimeout
+
+The openSPOT2 sends this message when a POCSAG message has been removed from
+the message queue because of a timeout. The JSON format is the following:
+
+```json
+{
+  "type": "pocsagmsgtimeout",
+  "id": "de4002de5048f86e"
+}
+```
+
+*id* is a unique message identifier.
+
+#### Push message type: pocsagstate
+
+The openSPOT2 sends this message when the POCSAG state changes, or the
+WebSocket connection is opened. The JSON format is the following:
+
+```json
+{
+  "type": "pocsagstate",
+  "state": 0,
+  "sec": 0,
+  "ts_nr": 15
+}
+```
+
+*state* can be the following:
+
+- 0: Idle.
+- 1: Waiting for RX/TX end.
+- 2: Waiting for TX delay. In this case *sec* is set to the remaining seconds.
+- 3: Waiting for timeslot. In this case *sec* is set to the remaining seconds,
+     and *ts_nr* is set to the (decimal) timeslot number which the OS2 waits.
+- 4: Transmitting POCSAG messages.
+
+#### Push message type: dapnetbgstate
+
+The openSPOT2 sends this message when the DAPNET connector background state
+changes, or the WebSocket connection is opened.
+The JSON format is the following:
+
+```json
+{
+  "type": "dapnetbgstate",
+  "state": 0
+}
+```
+
+*state* can be the following:
+
+- 0: Uninitialized.
+- 1: Initializing.
+- 2: Connecting.
+- 3: Connected.
+
+#### Push message type: modemfreq
+
+The openSPOT2 sends this message when the modem frequency changes.
+The JSON format is the following:
+
+```json
+{
+  "type": "modemfreq",
+  "data": {rx_frequency: 433900000, dmr_rx_offset: 0, ...}
+}
+```
+
+*data* field contains the output of the **modemfreq** WebSocket API interface
+as a JSON object. Note that this object is NOT stringified.
+
 ## WebSocket API interfaces
 
 ### logout
@@ -889,6 +1010,8 @@ Setting a new *send_srcid* in the query overwrites the *default_srcid*.
 If *send_to_modem* is 0, the SMS will be sent to the currently active connector.
 If *intercept_net_msgs* is 1, then SMS messages coming from the network to
 the *default_srcid* will be processed.
+If *send_intercepted_to_pocsag_ric* is not 0, received intercepted messages to
+*default_srcid* will be queued as POCSAG messages to RIC set by this field.
 If *only_save* is 1, the SMS will not get sent, only the *send_srcid* and
 *intercept_net* settings will be stored.
 
@@ -903,6 +1026,7 @@ Request (optional):
 {
   "only_save": 0,
   "intercept_net_msgs": 0,
+  "send_intercepted_to_pocsag_ric": 0,
   "send_dstid": 2161005,
   "send_calltype": 0,
   "send_srcid": 9998,
@@ -917,7 +1041,8 @@ Response:
 ```json
 {
   "default_srcid": 9998,
-  "intercept_net_msgs": 0,
+  "intercept_net": 0,
+  "send_intercepted_to_pocsag_ric": 0
 }
 ```
 
@@ -953,6 +1078,7 @@ Valid connector IDs:
 - 7: AutoCal
 - 8: REF/XRF
 - 9: YSFReflector
+- 10: DAPNET
 
 Request (optional):
 ```json
@@ -2117,9 +2243,12 @@ Response:
   "nxdn_ran": 0,
   "c4fm_demodmode": 0,
   "tx_frequency": 433450000,
+  "pocsag_freq_used": 0,
   "tx_power_percent": 100
 }
 ```
+
+*pocsag_freq_used* is 1 if the currently active modem mode is POCSAG.
 
 ### modemcwid
 
@@ -2438,3 +2567,70 @@ not a callsign). Valid values are:
 
 - 0: DMR
 - 1: NXDN
+
+### pocsagsettings
+
+POCSAG settings query (get)/change (post). Returns already stored settings.
+
+Request:
+```json
+{
+  "freq": 439987500,
+  "bitrate_mode": 0,
+  "txdelay_sec": 10,
+  "ts_nooverride": 0,
+  "timeslots": 65535
+}
+```
+Response:
+```json
+{
+  "freq": 439987500,
+  "bitrate_mode": 0,
+  "txdelay_sec": 10,
+  "ts_nooverride": 0,
+  "timeslots": 65535
+}
+```
+
+*bitrate_mode* can be the following:
+
+- 0: 1200bps
+- 1: 2400bps
+- 2: 512bps
+
+*timeslots* is a 16 bit value. Each bit represents a timeslot, so for example
+the value 32768 means timeslot F is allowed, and others are not.
+
+### pocsagmsg
+
+POCSAG message queue add/empty (post).
+
+Request:
+```json
+{
+  "dst_ric": 161005,
+  "msg": "beer",
+  "alert_type": 0,
+  "empty": 0
+}
+```
+Response:
+```json
+{
+  "empty_result": 0,
+  "add_result": 1
+}
+```
+
+If only a message send is needed, field *empty* is not needed. *add_result* is
+1 if add to the queue was successful.
+
+If you want to empty the POCSAG message queue, set *empty* to 1. If emptying
+the queue was successful, *empty_result* will be 1.
+
+*alert_type* can be the following:
+
+- 0: Not an alert message.
+- 1: Alert without message. In this case the *msg* field will be ignored.
+- 2: Alert with message.
