@@ -2170,7 +2170,7 @@ Request (optional):
   "cc": 1,
   "echo_id": 9999,
   "default_cross_mode_src_id": 0,
-  "only_ids_as_callsigns": 1
+  "allow_only_ids_as_callsigns": 1
 }
 ```
 Response:
