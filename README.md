@@ -303,6 +303,9 @@ The JSON format is the following:
 - 11th bit: 1 - DMR call
 - 12th bit: 1 - C4FM call
 - 13th bit: 1 - DSTAR call
+- 14th bit: 1 - NXDN call
+- 15th bit: 1 - P25 call
+- 16th bit: 1 - POCSAG call
 
 Other bits are currently unused.
 
@@ -1079,6 +1082,7 @@ Valid connector IDs:
 - 8: REF/XRF
 - 9: YSFReflector
 - 10: DAPNET
+- 11: NXDNReflector
 
 Request (optional):
 ```json
@@ -1419,6 +1423,48 @@ Response:
   "conn_retry_interval_sec": 1
 }
 ```
+
+### nxdnrefsettings
+
+NXDNReflector connector settings query (get)/change (post).
+
+See the **modemmode** interface for available *modem_mode* values.
+
+Request (optional):
+```json
+{
+  "rx_freq": 434000000,
+  "tx_freq": 434000000,
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 42000,
+  "callsign": "",
+  "tg_id": 123,
+  "keepalive_interval_sec": 1,
+  "rx_timeout_sec": 30,
+  "conn_retry_interval_sec": 1
+}
+```
+Response:
+```json
+{
+  "rx_freq": 434000000,
+  "tx_freq": 434000000,
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 42000,
+  "callsign": "",
+  "tg_id": 123,
+  "default_cross_mode_dstid": 9,
+  "always_use_cross_mode_dstid": 1,
+  "keepalive_interval_sec": 1,
+  "rx_timeout_sec": 10,
+  "conn_retry_interval_sec": 1
+}
+```
+
+*default_cross_mode_dstid* and *always_use_cross_mode_dstid* are the same
+fields as in **nxdnsettings** WebSocket API interface.
 
 ### dapnetsettings
 
@@ -2344,11 +2390,13 @@ Current modem mode query (get)/change (post).
 *mode* can be:
 
 - 0: Idle
-- 1: Raw
-- 2: DMR
-- 3: D-STAR
-- 4: C4FM
-- 5: C4FM half deviation mode
+- 1: DMR
+- 2: D-STAR
+- 3: C4FM
+- 4: C4FM half deviation mode
+- 5: NXDN
+- 6: P25
+- 7: POCSAG
 
 Request (optional):
 ```json
