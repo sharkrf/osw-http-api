@@ -299,7 +299,7 @@ The JSON format is the following:
 - 7th bit: 1 - voice announcement
 - 8th bit: 1 - echo reply
 - 9th bit: 1 - C4FM DN (VD) mode 1, 0 - C4FM DN (VD) mode 2
-- 10th bit: 1 - C4FM voice wide mode, 0 - C4FM digital narrow mode
+- 10th bit: 1 - C4FM voice wide or WiresX call, 0 - C4FM digital narrow mode
 - 11th bit: 1 - DMR call
 - 12th bit: 1 - C4FM call
 - 13th bit: 1 - DSTAR call
@@ -1192,9 +1192,10 @@ description.
 
 See the **modemmode** interface for available *modem_mode* values.
 
-*b_server_host* is the backup server host.
-*b_port* is the backup server port.
-*b_password* is the backup server password.
+*is_bm_srv* should be set to 1 if the server is a BrandMeister server.
+*server_name* should be set to the currently selected server's name.
+
+Fields starting with *b_* are for the backup server.
 *b_toggle_timeout_sec* is the timeout in seconds to toggle between the backup
 and primary servers.
 
@@ -1205,12 +1206,16 @@ Request (optional):
   "tx_freq": 434000000,
   "modem_mode": 0,
   "server_host": "",
+  "is_bm_srv": 0,
+  "server_name": "",
   "port": 62030,
   "mmdvm_mode": 0,
   "mmdvm_options": "",
   "callsign": "",
   "password": "",
   "b_server_host": "",
+  "b_is_bm_srv": 0,
+  "b_server_name": "",
   "b_port": 62030,
   "b_password": "",
   "b_toggle_timeout_sec": 60,
@@ -2226,6 +2231,10 @@ DGID *force_dgid_to_net* set.
 Request (optional):
 ```json
 {
+  "allow_data_calls_to_net": 0,
+  "ignore_wiresx_btn_cmds": 0,
+  "no_wiresx_conn_msgs": 0,
+  "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
   "dtmf_pcode": "*",
   "dtmf_gcode": "#",
@@ -2243,6 +2252,10 @@ Request (optional):
 Response:
 ```json
 {
+  "allow_data_calls_to_net": 0,
+  "ignore_wiresx_btn_cmds": 0,
+  "no_wiresx_conn_msgs": 0,
+  "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
   "dtmf_pcode": "*",
   "dtmf_gcode": "#",
