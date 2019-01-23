@@ -2165,6 +2165,8 @@ If *no_inband* is set to 1, in-band DMR data like GPS position or talker
 alias will not be sent to the modem.
 If *allow_only_ids_as_callsigns* is set to 1, then only parseable DMR IDs are
 allowed as source callsigns in cross modem modes.
+If *force_src_id* is set to other than 0, then the source ID of all DMR calls
+received by the modem will be replaced with this ID.
 
 Request (optional):
 ```json
@@ -2172,6 +2174,7 @@ Request (optional):
   "no_srvinband": 0,
   "force_talker_alias": "abcd",
   "no_inband": 0,
+  "force_src_id": 0,
   "cc": 1,
   "echo_id": 9999,
   "default_cross_mode_src_id": 0,
@@ -2184,6 +2187,7 @@ Response:
   "no_srvinband": 0,
   "force_talker_alias": "abcd",
   "no_inband": 0,
+  "force_src_id": 0,
   "cc": 1,
   "echo_id": 9999,
   "default_cross_mode_src_id": 0,
