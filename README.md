@@ -1148,6 +1148,8 @@ DMRplus connector settings query (get)/change (post).
 
 See the **modemmode** interface for available *modem_mode* values.
 
+*server_id* is the IEEE CRC32 of the server's name from the server list.
+
 Request (optional):
 ```json
 {
@@ -1155,6 +1157,7 @@ Request (optional):
   "tx_freq": 434000000,
   "modem_mode": 0,
   "server_host": "",
+  "server_id": 123,
   "port": 8880,
   "dmr_id": "",
   "reflector_id": 0,
@@ -1199,6 +1202,11 @@ Fields starting with *b_* are for the backup server.
 *b_toggle_timeout_sec* is the timeout in seconds to toggle between the backup
 and primary servers.
 
+*server_name* is the server name from the server list.
+*server_id* is the BrandMeister server's ID. If the server is not a
+BrandMeister server, then it is the IEEE CRC32 of the server's name from the
+server list.
+
 Request (optional):
 ```json
 {
@@ -1206,6 +1214,8 @@ Request (optional):
   "tx_freq": 434000000,
   "modem_mode": 0,
   "server_host": "",
+  "server_name": "",
+  "server_id": 123,
   "is_bm_srv": 0,
   "server_name": "",
   "port": 62030,
