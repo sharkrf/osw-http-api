@@ -2533,12 +2533,16 @@ If you want to request a quick call to the network, you can send a request to
 this interface. If the currently active connector does not support the quick
 call feature, the response code will be 400 Bad Request.
 
+If *ignore_call_from_4000* is set to 1, then the openSPOT2 ignores (mutes) the
+first call coming from ID 4000.
+
 Request (optional):
 ```json
 {
   "dst_id": 4000,
   "private_call": 0,
-  "tdma_channel": 0
+  "tdma_channel": 0,
+  "ignore_call_from_4000": 1
 }
 ```
 
