@@ -306,6 +306,7 @@ The JSON format is the following:
 - 14th bit: 1 - NXDN call
 - 15th bit: 1 - P25 call
 - 16th bit: 1 - POCSAG call
+- 17th bit: 1 - Muted call
 
 Other bits are currently unused.
 
