@@ -1866,6 +1866,7 @@ Query (optional):
   "chkintervalsec": 60,
   "syslog_host": "log.server.com",
   "syslog_enabled": 0,
+  "syslog_port": 514,
   "pwrsaving": 1,
 }
 ```
@@ -1879,6 +1880,7 @@ Response:
   "pwrsaving": 1,
   "syslog_host": "log.server.com",
   "syslog_enabled": 0,
+  "syslog_port": 514,
   "reload": 0
 }
 ```
