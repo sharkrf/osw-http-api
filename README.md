@@ -929,6 +929,80 @@ The JSON format is the following:
 *data* field contains the output of the **modemfreq** WebSocket API interface
 as a JSON object. Note that this object is NOT stringified.
 
+#### Push message type: aprsmsgqueue
+
+The openSPOT2 sends this message after the WebSocket connection is opened.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprsmsgqueue",
+  "queue": [
+    {"is_outbound":0,"is_unconfirmed":0,"callsign":"HG1MA","msg":"beer1","id":"123","ts":1549976403},
+    {"is_outbound":1,"is_unconfirmed":0,"callsign":"HG1MA","msg":"beer2","id":"124","ts":1549976405}
+  ]
+}
+```
+
+*queue* contains all messages in the APRS queue. *ts* is the UNIX timestamp of
+the queue message add.
+
+#### Push message type: aprsmsg
+
+The openSPOT2 sends this message when a message has been added to the queue.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprsmsg",
+  "msg": {"is_outbound":0,"is_unconfirmed":0,"callsign":"HG1MA","msg":"beer1","id":"123","ts":1549976403}
+}
+```
+
+*ts* is the UNIX timestamp of the queue message add.
+
+#### Push message type: aprstxmsgwaitack
+
+The openSPOT2 sends this message when an outbound message in the queue has been
+sent and it is waiting for an acknowledge from the recipient.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprstxmsgwaitack",
+  "id": "123",
+  "remaining_sec": 15
+}
+```
+
+*remaining_sec* is the seconds remaining until the device retries sending.
+
+#### Push message type: aprstxmsggotack
+
+The openSPOT2 sends this message when an outbound message has been acknowledged
+by the recipient.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprstxmsggotack",
+  "id": "123"
+}
+```
+
+#### Push message type: aprstxmsgtimeout
+
+The openSPOT2 sends this message when an outbound message send has been timed
+out.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprstxmsgtimeout",
+  "id": "123"
+}
+```
+
 ## WebSocket API interfaces
 
 ### logout
@@ -2780,3 +2854,60 @@ the queue was successful, *empty_result* will be 1.
 - 0: Not an alert message.
 - 1: Alert without message. In this case the *msg* field will be ignored.
 - 2: Alert with message.
+
+### aprssettings
+
+APRS settings query (get)/change (post). Returns already stored settings.
+
+Request (optional):
+```json
+{
+  "server_host": "rotate.aprs2.net",
+  "port": 14580,
+  "callsign": "HA2NON",
+  "rx_timeout_sec": 65,
+  "conn_retry_interval_sec": 5,
+  "location_symbol": "\\&",
+  "location_comment": "SharkRF openSPOT2",
+  "location_send_enabled": 1,
+  "allow_in_bg": 1,
+  "send_to_pocsag_ric": 0
+}
+```
+Response:
+```json
+{
+  "server_host": "rotate.aprs2.net",
+  "port": 14580,
+  "callsign": "HA2NON",
+  "rx_timeout_sec": 65,
+  "conn_retry_interval_sec": 5,
+  "location_symbol": "\\&",
+  "location_comment": "SharkRF openSPOT2",
+  "location_send_enabled": 1,
+  "allow_in_bg": 1,
+  "send_to_pocsag_ric": 0
+}
+```
+
+### aprsmsgsend
+
+APRS message queue add (post).
+
+Request:
+```json
+{
+  "addressee": "HG1MA",
+  "msg": "beer",
+  "send_unconfirmed": 0
+}
+```
+Response:
+```json
+{
+  "id": 123
+}
+```
+
+*id* is the queued message's ID, or -1 if message adding to the queue was
+unsuccessful.
