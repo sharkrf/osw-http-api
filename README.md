@@ -964,13 +964,14 @@ The JSON format is the following:
 #### Push message type: aprstxmsgwaitack
 
 The openSPOT2 sends this message when an outbound message in the queue has been
-sent and it is waiting for an acknowledge from the recipient.
+sent and it is waiting for an acknowledge from the recipient, and also after
+the WebSocket connection is opened.
 The JSON format is the following:
 
 ```json
 {
   "type": "aprstxmsgwaitack",
-  "id": "123",
+  "msg": {"is_outbound":1,"is_unconfirmed":0,"callsign":"HG1MA","msg":"beer1","id":"123","ts":1549976403},
   "remaining_sec": 15
 }
 ```
@@ -999,6 +1000,19 @@ The JSON format is the following:
 ```json
 {
   "type": "aprstxmsgtimeout",
+  "id": "123"
+}
+```
+
+#### Push message type: aprstxmsgcancel
+
+The openSPOT2 sends this message when an outbound message send has been
+cancelled.
+The JSON format is the following:
+
+```json
+{
+  "type": "aprstxmsgcancel",
   "id": "123"
 }
 ```
@@ -2892,14 +2906,16 @@ Response:
 
 ### aprsmsgsend
 
-APRS message queue add (post).
+APRS message queue add (post). If you set *send_cancel* to 1 then the currently
+ongoing message send will be cancelled.
 
 Request:
 ```json
 {
   "addressee": "HG1MA",
   "msg": "beer",
-  "send_unconfirmed": 0
+  "send_unconfirmed": 0,
+  "send_cancel": 0
 }
 ```
 Response:
@@ -2909,5 +2925,5 @@ Response:
 }
 ```
 
-*id* is the queued message's ID, or -1 if message adding to the queue was
-unsuccessful.
+*id* is the queued (or cancelled) message's ID, or -1 if message adding to the
+queue (or cancel) was unsuccessful.
