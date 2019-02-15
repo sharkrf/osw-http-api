@@ -2885,7 +2885,21 @@ Request (optional):
   "location_comment": "SharkRF openSPOT2",
   "location_send_enabled": 1,
   "allow_in_bg": 1,
-  "send_to_pocsag_ric": 0
+  "send_to_pocsag_ric": 0,
+  "allow_dstar_loc_fwd": 1,
+  "force_dstar_loc_ssid_en": 0,
+  "force_dstar_loc_symbol_en": 0,
+  "force_dstar_loc_comment_en": 0,
+  "allow_c4fm_loc_fwd": 1,
+  "force_c4fm_loc_ssid_en": 0,
+  "force_c4fm_loc_symbol_en": 0,
+  "force_c4fm_loc_comment_en": 0,
+  "force_dstar_loc_ssid": 7,
+  "force_dstar_loc_symbol": "/[",
+  "force_dstar_loc_comment": "SharkRF openSPOT2",
+  "force_c4fm_loc_ssid": 7,
+  "force_c4fm_loc_symbol": "/[",
+  "force_c4fm_loc_comment": "SharkRF openSPOT2"
 }
 ```
 Response:
@@ -2900,7 +2914,21 @@ Response:
   "location_comment": "SharkRF openSPOT2",
   "location_send_enabled": 1,
   "allow_in_bg": 1,
-  "send_to_pocsag_ric": 0
+  "send_to_pocsag_ric": 0,
+  "allow_dstar_loc_fwd": 1,
+  "force_dstar_loc_ssid_en": 0,
+  "force_dstar_loc_symbol_en": 0,
+  "force_dstar_loc_comment_en": 0,
+  "allow_c4fm_loc_fwd": 1,
+  "force_c4fm_loc_ssid_en": 0,
+  "force_c4fm_loc_symbol_en": 0,
+  "force_c4fm_loc_comment_en": 0,
+  "force_dstar_loc_ssid": 7,
+  "force_dstar_loc_symbol": "/[",
+  "force_dstar_loc_comment": "SharkRF openSPOT2",
+  "force_c4fm_loc_ssid": 7,
+  "force_c4fm_loc_symbol": "/[",
+  "force_c4fm_loc_comment": "SharkRF openSPOT2"
 }
 ```
 
