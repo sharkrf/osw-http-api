@@ -2243,6 +2243,7 @@ Request (optional):
   "latitude": "0.0",
   "longitude": "0.0",
   "height_agl": 0,
+  "height_asl": 0,
   "name": ""
 }
 ```
@@ -2252,6 +2253,7 @@ Response:
   "latitude": "0.0",
   "longitude": "0.0",
   "height_agl": 0,
+  "height_asl": 0,
   "name": ""
 }
 ```
