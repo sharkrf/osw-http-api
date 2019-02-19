@@ -410,6 +410,7 @@ The JSON is the following:
 - 13: Special connector is active (ex. Null, AutoCal etc.)
 - 14: Connector connecting
 - 15: Connector connected
+- 16: Modem ignoring receive
 
 #### Push message type: modemmode
 
@@ -2597,6 +2598,7 @@ Request (optional):
 {
   "reset_settings": 0,
   "bclo_dbm": -80,
+  "ignore_rx_after_tx_ms": 0,
   "sensitivity_level": 6,
   "filter_gain": 0,
   "agc_auto": 0,
@@ -2610,6 +2612,7 @@ Response:
 ```json
 {
   "bclo_dbm": -80,
+  "ignore_rx_after_tx_ms": 0,
   "sensitivity_level": 6,
   "filter_gain": 0,
   "agc_auto": 0,
