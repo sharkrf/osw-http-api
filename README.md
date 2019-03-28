@@ -686,6 +686,14 @@ the user. The JSON format is the following:
 - 12: Authentication token downloaded successfully.
 - 13: Authentication token download failed.
 - 14: Connector authentication failed.
+- 15: Color code mismatch in received stream from modem.
+- 16: DGID mismatch in received stream from modem.
+- 17: RAN mismatch in received stream from modem.
+- 18: DAPNET server error. In this case param is the error string.
+- 19: DAPNET server error, invalid auth key.
+- 20: NAC mismatch in received stream from modem.
+- 21: Transceiver mode should be set to Digital Narrow (DN).
+- 22: Transceiver modem should be set to Voice Wide (VW).
 
 #### Push message type: time
 
@@ -1173,6 +1181,8 @@ Valid connector IDs:
 - 9: YSFReflector
 - 10: DAPNET
 - 11: NXDNReflector
+- 12: APRS
+- 13: P25Reflector
 
 Request (optional):
 ```json
@@ -1542,7 +1552,7 @@ Request (optional):
   "tx_freq": 434000000,
   "modem_mode": 0,
   "server_host": "",
-  "port": 42000,
+  "port": 41400,
   "callsign": "",
   "tg_id": 123,
   "keepalive_interval_sec": 1,
@@ -1557,7 +1567,7 @@ Response:
   "tx_freq": 434000000,
   "modem_mode": 0,
   "server_host": "",
-  "port": 42000,
+  "port": 41400,
   "callsign": "",
   "tg_id": 123,
   "default_cross_mode_dstid": 9,
@@ -1570,6 +1580,45 @@ Response:
 
 *default_cross_mode_dstid* and *always_use_cross_mode_dstid* are the same
 fields as in **nxdnsettings** WebSocket API interface.
+
+### p25refsettings
+
+P25Reflector connector settings query (get)/change (post).
+
+See the **modemmode** interface for available *modem_mode* values.
+
+Request (optional):
+```json
+{
+  "rx_freq": 434000000,
+  "tx_freq": 434000000,
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 41000,
+  "callsign": "",
+  "tg_id": 123,
+  "reroute_enabled": 1,
+  "keepalive_interval_sec": 1,
+  "rx_timeout_sec": 30,
+  "conn_retry_interval_sec": 1
+}
+```
+Response:
+```json
+{
+  "rx_freq": 434000000,
+  "tx_freq": 434000000,
+  "modem_mode": 0,
+  "server_host": "",
+  "port": 41000,
+  "callsign": "",
+  "tg_id": 123,
+  "reroute_enabled": 1,
+  "keepalive_interval_sec": 1,
+  "rx_timeout_sec": 10,
+  "conn_retry_interval_sec": 1
+}
+```
 
 ### dapnetsettings
 
@@ -1715,6 +1764,7 @@ Query (optional):
   "dmr_rx_offset": 0,
   "c4fm_half_rx_offset": 0,
   "nxdn_rx_offset": 0,
+  "p25_rx_offset": 0,
   "tx_freq": 434000000,
   "modem_mode": 1
 }
@@ -1726,6 +1776,7 @@ Response:
   "dmr_rx_offset": 0,
   "c4fm_half_rx_offset": 0,
   "nxdn_rx_offset": 0,
+  "p25_rx_offset": 0,
   "tx_freq": 434000000,
   "modem_mode": 1
 }
@@ -2267,10 +2318,13 @@ If *no_srvinband* is set to 1, in-band DMR data like GPS position or talker
 alias will not be sent to the network.
 If *no_inband* is set to 1, in-band DMR data like GPS position or talker
 alias will not be sent to the modem.
-If *allow_only_ids_as_callsigns* is set to 1, then only parseable DMR IDs are
-allowed as source callsigns in cross modem modes.
 If *force_src_id* is set to other than 0, then the source ID of all DMR calls
 received by the modem will be replaced with this ID.
+The *default_cross_mode_src_id* will be used as the source ID for DMR calls in
+cross modem modes if the original source callsign can't be parsed to a valid
+DMR ID.
+If *allow_only_ids_as_callsigns* is set to 1, then only parseable DMR IDs are
+allowed as source callsigns in cross modem modes.
 
 Request (optional):
 ```json
@@ -2417,6 +2471,34 @@ Response:
 }
 ```
 
+### p25settings
+
+General P25 settings query (get)/change (post).
+The *default_cross_mode_src_id* will be used as the source ID for P25 calls in
+cross modem modes if the original source callsign can't be parsed to a valid
+P25 ID.
+If *allow_only_ids_as_callsigns* is set to 1, then only parseable P25 IDs are
+allowed as source callsigns in cross modem modes.
+
+Request (optional):
+```json
+{
+  "nac": 0,
+  "echo_id": 9999,
+  "default_cross_mode_src_id": 9,
+  "allow_only_ids_as_callsigns": 0
+}
+```
+Response:
+```json
+{
+  "nac": 0,
+  "echo_id": 9999,
+  "default_cross_mode_src_id": 9,
+  "allow_only_ids_as_callsigns": 0
+}
+```
+
 ### locksettings
 
 Callsign/CCS7 ID lock settings query (get)/change (post).
@@ -2458,7 +2540,8 @@ Request (optional):
   "c4fm_half_rx_offset": 0,
   "nxdn_rx_offset": 0,
   "nxdn_ran": 0,
-  "c4fm_demodmode": 0,
+  "p25_rx_offset": 0,
+  "p25_nac": 0,
   "tx_frequency": 433450000,
   "tx_power_percent": 100
 }
@@ -2472,7 +2555,8 @@ Response:
   "c4fm_half_rx_offset": 0,
   "nxdn_rx_offset": 0,
   "nxdn_ran": 0,
-  "c4fm_demodmode": 0,
+  "p25_rx_offset": 0,
+  "p25_nac": 0,
   "tx_frequency": 433450000,
   "pocsag_freq_used": 0,
   "tx_power_percent": 100
