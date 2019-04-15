@@ -1598,6 +1598,7 @@ Request (optional):
   "callsign": "",
   "tg_id": 123,
   "reroute_enabled": 1,
+  "reroute_tg_id": 9,
   "keepalive_interval_sec": 1,
   "rx_timeout_sec": 30,
   "conn_retry_interval_sec": 1
@@ -1614,6 +1615,7 @@ Response:
   "callsign": "",
   "tg_id": 123,
   "reroute_enabled": 1,
+  "reroute_tg_id": 9,
   "keepalive_interval_sec": 1,
   "rx_timeout_sec": 10,
   "conn_retry_interval_sec": 1
