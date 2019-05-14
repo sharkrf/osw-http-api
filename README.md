@@ -2397,6 +2397,7 @@ Request (optional):
 {
   "allow_data_calls_to_net": 0,
   "ignore_wiresx_btn_cmds": 0,
+  "disable_name_upcase": 0,
   "no_wiresx_conn_msgs": 0,
   "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
@@ -2418,6 +2419,7 @@ Response:
 {
   "allow_data_calls_to_net": 0,
   "ignore_wiresx_btn_cmds": 0,
+  "disable_name_upcase": 0,
   "no_wiresx_conn_msgs": 0,
   "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
