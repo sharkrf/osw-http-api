@@ -394,7 +394,7 @@ The JSON is the following:
 ```json
 {
   "type": "state",
-  "state": 15
+  "state": 16
 }
 ```
 
@@ -405,12 +405,12 @@ The JSON is the following:
 - 3: Modem transmitting CWID
 - 4: Modem can't transmit because BCLO is active
 - 5: Modem receiving
-- 8: AP mode on, client connected
-- 10: No internet connection
-- 13: Special connector is active (ex. Null, AutoCal etc.)
-- 14: Connector connecting
-- 15: Connector connected
-- 16: Modem ignoring receive
+- 9: AP mode on, client connected
+- 11: No internet connection
+- 14: Special connector is active (ex. Null, AutoCal etc.)
+- 15: Connector connecting
+- 16: Connector connected
+- 17: Modem ignoring receive
 
 #### Push message type: modemmode
 
