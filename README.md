@@ -2577,6 +2577,7 @@ Request (optional):
 ```json
 {
   "enabled": 1,
+  "modulate": 0,
   "cwid": "HA2NON",
   "wpm": 25,
   "interval_sec": 600,
@@ -2587,6 +2588,7 @@ Response:
 ```json
 {
   "enabled": 1,
+  "modulate": 0,
   "cwid": "HA2NON",
   "wpm": 25,
   "interval_sec": 600,
