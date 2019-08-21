@@ -251,6 +251,7 @@ station available in the device's database. The JSON format is the following:
 {
   "type": "csd",
   "dmrids": [2161005,2161028],
+  "dmrtgids": [],
   "nxdnids": [61005],
   "callsign": "HA2NON",
   "name": "Norbert",
