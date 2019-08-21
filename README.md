@@ -2320,8 +2320,12 @@ If *no_srvinband* is set to 1, in-band DMR data like GPS position or talker
 alias will not be sent to the network.
 If *no_inband* is set to 1, in-band DMR data like GPS position or talker
 alias will not be sent to the modem.
+If *gen_talker_alias_to_modem* is set to 1, a talker alias will be generated to
+the stream sent to the modem based on the information available in the DMR ID
+database.
 If *force_src_id* is set to other than 0, then the source ID of all DMR calls
 received by the modem will be replaced with this ID.
+*tglist* is the preferred talkgroup list. Valid values are: default and tgif.
 The *default_cross_mode_src_id* will be used as the source ID for DMR calls in
 cross modem modes if the original source callsign can't be parsed to a valid
 DMR ID.
@@ -2334,9 +2338,11 @@ Request (optional):
   "no_srvinband": 0,
   "force_talker_alias": "abcd",
   "no_inband": 0,
+  "gen_talker_alias_to_modem": 0,
   "force_src_id": 0,
   "cc": 1,
   "echo_id": 9999,
+  "tglist": "default",
   "default_cross_mode_src_id": 0,
   "allow_only_ids_as_callsigns": 1
 }
@@ -2347,9 +2353,11 @@ Response:
   "no_srvinband": 0,
   "force_talker_alias": "abcd",
   "no_inband": 0,
+  "gen_talker_alias_to_modem": 0,
   "force_src_id": 0,
   "cc": 1,
   "echo_id": 9999,
+  "tglist": "default",
   "default_cross_mode_src_id": 0,
   "allow_only_ids_as_callsigns": 1
 }
@@ -2872,6 +2880,7 @@ Response:
 {
   "result": 0,
   "dmrids": [2161005, 2161028],
+  "dmrtgids": [],
   "nxdnids": [61005],
   "callsign": "HA2NON",
   "name": "Norbert",
@@ -2896,6 +2905,8 @@ not a callsign). Valid values are:
 
 - 0: DMR
 - 1: NXDN
+- 2: DMR talkgroup
+- 3: DMR TGIF Network talkgroup
 
 ### pocsagsettings
 
