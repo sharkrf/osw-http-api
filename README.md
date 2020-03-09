@@ -2373,7 +2373,8 @@ Request (optional):
 {
   "echo_callsign": "       E",
   "transmit_rx_confirmation": 1,
-  "dtmf_automute_cmds": 1
+  "dtmf_automute_cmds": 1,
+  "dtmf_autoignore_cmds": 1
 }
 ```
 Response:
@@ -2381,7 +2382,8 @@ Response:
 {
   "echo_callsign": "       E",
   "transmit_rx_confirmation": 1,
-  "dtmf_automute_cmds": 1
+  "dtmf_automute_cmds": 1,
+  "dtmf_autoignore_cmds": 1
 }
 ```
 
@@ -2410,6 +2412,7 @@ Request (optional):
   "no_wiresx_conn_msgs": 0,
   "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
+  "dtmf_autoignore_cmds": 1,
   "dtmf_pcode": "*",
   "dtmf_gcode": "#",
   "transmit_rx_confirmation": 1,
@@ -2432,6 +2435,7 @@ Response:
   "no_wiresx_conn_msgs": 0,
   "hide_profiles_in_wiresx_all_reply": 0,
   "dtmf_automute_cmds": 1,
+  "dtmf_autoignore_cmds": 1,
   "dtmf_pcode": "*",
   "dtmf_gcode": "#",
   "transmit_rx_confirmation": 1,
