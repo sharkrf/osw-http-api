@@ -695,6 +695,9 @@ the user. The JSON format is the following:
 - 20: NAC mismatch in received stream from modem.
 - 21: Transceiver mode should be set to Digital Narrow (DN).
 - 22: Transceiver modem should be set to Voice Wide (VW).
+- 23: REF/XRF server is currently overloaded.
+- 24: REF/XRF server is connected read only.
+- 25: Can't transmit to REF/XRF server, it's connected read only.
 
 #### Push message type: time
 
